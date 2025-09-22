@@ -6,7 +6,7 @@ const Table = ({ columns, data, actions, searchable = true, pagination = true })
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Filter data based on search term
+
   const filteredData = searchable 
     ? data.filter(item => 
         Object.values(item).some(value => 
@@ -15,7 +15,7 @@ const Table = ({ columns, data, actions, searchable = true, pagination = true })
       )
     : data;
 
-  // Pagination
+  
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = pagination 
