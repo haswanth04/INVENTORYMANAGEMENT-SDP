@@ -13,16 +13,16 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // Try to get user from sessionStorage immediately for faster loading
+   
     const storedUser = sessionStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [loading, setLoading] = useState(false); // Start with false for faster loading
+  const [loading, setLoading] = useState(false); 
   const [token, setToken] = useState(sessionStorage.getItem('token'));
 
   useEffect(() => {
     if (token) {
-      // Verify token and get user info
+    
       verifyToken();
     } else {
       setLoading(false);
