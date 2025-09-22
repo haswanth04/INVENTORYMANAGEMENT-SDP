@@ -81,7 +81,7 @@ function App() {
             />
           </Route>
 
-          {/* Catch all route */}
+          {/* Catch */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
