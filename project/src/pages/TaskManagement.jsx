@@ -114,7 +114,7 @@ const TaskManagement = () => {
     
     try {
       if (editingTask) {
-        // Update task
+        
         const response = await apiService.updateTask(editingTask.id, {
           title: formData.title,
           description: formData.description,
