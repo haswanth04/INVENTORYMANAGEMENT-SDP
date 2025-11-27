@@ -27,7 +27,6 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-    
     {
       name: 'Dashboard',
       href: '/dashboard',
@@ -35,8 +34,6 @@ const Sidebar = () => {
       roles: ['ADMIN', 'MANAGER', 'STAFF'],
       description: 'Overview and analytics'
     },
-
-    
     {
       name: 'User Management',
       href: '/users',
@@ -58,8 +55,6 @@ const Sidebar = () => {
       roles: ['ADMIN'],
       description: 'System configuration and administration'
     },
-
-    
     {
       name: 'Inventory Management',
       href: '/inventory',
@@ -81,32 +76,20 @@ const Sidebar = () => {
       roles: ['MANAGER'],
       description: 'Assign and manage tasks for staff'
     },
-
-   
     {
       name: 'Stock Management',
       href: '/stock',
       icon: CubeIcon,
       roles: ['STAFF'],
-      description: 'Daily stock operations and updates',
-      subItems: [
-        { name: 'Stock Overview', href: '/stock' }
-      ]
+      description: 'Daily stock operations and updates'
     },
     {
       name: 'My Tasks',
       href: '/tasks',
       icon: ClipboardDocumentListIcon,
       roles: ['STAFF'],
-      description: 'Personal tasks and assignments',
-      subItems: [
-        { name: 'Assigned Tasks', href: '/tasks' },
-        { name: 'Completed Tasks', href: '/tasks' },
-        { name: 'Task History', href: '/tasks' }
-      ]
+      description: 'Personal tasks and assignments'
     },
-
-    
     {
       name: 'Profile Settings',
       href: '/profile',
@@ -123,38 +106,49 @@ const Sidebar = () => {
     }
   ];
 
-  const filteredMenuItems = menuItems.filter(item => 
+  const filteredMenuItems = menuItems.filter(item =>
     hasAnyRole(item.roles)
   );
 
+  const navItemClasses = ({ isActive }) =>
+    `group flex items-center gap-3 px-4 py-2 rounded-2xl text-sm font-medium transition duration-200 ${
+      isActive
+        ? 'bg-white/15 text-white shadow-lg shadow-primary-500/20'
+        : 'text-white/70 hover:bg-white/10 hover:text-white'
+    }`;
+
   const SidebarContent = () => (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-800">InventoryMS</h2>
+    <div className="flex flex-col h-full bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-950/60 border-r border-white/10 text-white">
+      <div className="flex items-center justify-between px-5 py-6 border-b border-white/10">
+        <div>
+          <p className="text-xs uppercase tracking-[0.4em] text-white/50">Aurora</p>
+          <h2 className="text-xl font-semibold tracking-tight">Inventory Cloud</h2>
+        </div>
         <button
           onClick={() => setIsMobileMenuOpen(false)}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+          className="md:hidden p-2 rounded-full bg-white/5 hover:bg-white/10 transition"
         >
-          <XMarkIcon className="h-5 w-5" />
+          <XMarkIcon className="h-5 w-5 text-white" />
         </button>
       </div>
 
-      <div className="flex-1 px-4 py-6">
-        <div className="mb-6">
-          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-            <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center text-white font-medium">
-              {user?.username?.charAt(0).toUpperCase()}
+      <div className="flex-1 px-4 py-6 overflow-y-auto">
+        <div className="mb-8 glass-panel px-4 py-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-white/50 mb-1">Current session</p>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-primary-500 flex items-center justify-center text-lg font-semibold">
+              {user?.username?.charAt(0).toUpperCase() || '?'}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">{user?.username}</p>
-              <p className="text-xs text-gray-500">{user?.role}</p>
+              <p className="text-sm font-semibold text-white">{user?.username || 'Guest'}</p>
+              <p className="text-xs text-white/60">{user?.role || 'Role pending'}</p>
             </div>
           </div>
         </div>
 
-        <nav className="space-y-1">
+        <div className="space-y-1">
           {filteredMenuItems.length === 0 ? (
-            <div className="text-center py-4 text-gray-500">
+            <div className="text-center py-4 text-white/60 text-sm">
               <p>No menu items available for your role</p>
             </div>
           ) : (
@@ -162,62 +156,56 @@ const Sidebar = () => {
               <NavLink
                 key={item.name}
                 to={item.href}
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition duration-200 ${
-                    isActive
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                  }`
-                }
+                className={navItemClasses}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <item.icon className="h-5 w-5" />
-                <span>{item.name}</span>
+                <div className="flex flex-col">
+                  <span>{item.name}</span>
+                  <span className="text-[11px] text-white/40 tracking-wide">{item.description}</span>
+                </div>
               </NavLink>
             ))
           )}
-        </nav>
+        </div>
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      <div className="px-5 py-5 border-t border-white/10 space-y-3">
         <button
           onClick={handleLogout}
-          className="flex items-center space-x-3 w-full px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg transition duration-200"
+          className="w-full flex items-center justify-center gap-2 btn-secondary"
         >
           <ArrowRightOnRectangleIcon className="h-5 w-5" />
-          <span>Logout</span>
+          Logout
         </button>
+        <p className="text-[11px] text-white/40">
+          Secured session • {new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+        </p>
       </div>
     </div>
   );
 
   return (
     <>
-      {/* Mobile menu button */}
       <button
         onClick={() => setIsMobileMenuOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-white/10 border border-white/20 backdrop-blur transition"
       >
-        <Bars3Icon className="h-6 w-6 text-gray-600" />
+        <Bars3Icon className="h-6 w-6 text-white" />
       </button>
 
-      {/* Mobile sidebar overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setIsMobileMenuOpen(false)} />
+        <div className="md:hidden fixed inset-0 z-40 bg-slate-950/80 backdrop-blur" onClick={() => setIsMobileMenuOpen(false)} />
       )}
 
-      {/* Mobile sidebar */}
-      <div className={`md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+      <div className={`md:hidden fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-in-out ${
         isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <SidebarContent />
       </div>
 
-      {/* Desktop sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 z-30">
-        <div className="flex-1 flex flex-col min-h-0 bg-white border-r border-gray-200">
-          <SidebarContent />
-        </div>
+      <div className="hidden md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-30">
+        <SidebarContent />
       </div>
     </>
   );
